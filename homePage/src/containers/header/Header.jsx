@@ -1,6 +1,10 @@
 import React from 'react';
 import people from '../../assets/people.png';
-// import ai from '../../assets/ai.png';
+import antitoxicLogo from '../../assets/antitoxic_logo.png';
+import artalaxiesLogo from '../../assets/artalaxies_logo.png';
+import artalaxiesWhiteLogo from '../../assets/artalaxies_white.png';
+
+import communityLogo from '../../assets/community.png';
 import './header.css';
 
 const Header = () => (
@@ -14,15 +18,20 @@ const Header = () => (
         <button type="button">Get Started</button>
       </div> */}
 
+      <div className="gpt3__header-content__button_group">
+        <button type="button"><img src={antitoxicLogo} />Antitoxic</button>
+        <button type="button"><img src={artalaxiesWhiteLogo} />Marketplace</button>
+        <button type="button"><img src={communityLogo} />Community</button>
+      </div>
       <div className="gpt3__header-content__people">
         <img src={people} />
         <p>1,600 people requested access a visit in last 24 hours</p>
       </div>
     </div>
 
-    {/* <div className="gpt3__header-image">
-      <img src={ai} />
-    </div> */}
+    <div className="gpt3__header-image">
+      <img src={artalaxiesLogo} />
+    </div>
   </div>
 );
 
