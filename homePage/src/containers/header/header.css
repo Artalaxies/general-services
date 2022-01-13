@@ -104,21 +104,18 @@
 .gpt3__header-content__button_group {
     width: 100%;
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    justify-content: space-around;
+    align-items: baseline;
     flex-direction: row;
-
+    flex-wrap:  wrap;
     margin-top: 2rem;
 }
 
 .gpt3__header-content__button_group button{
-    width: 100%;
+    /* width: 100%; */
     text-align: center;
-    flex-direction: row;
-
+    flex-direction: column;
     margin: 1rem 2rem;
-
-    flex: 0.6;
     min-height: 50px;
     font-family: var(--font-family);
     font-weight: 400;
@@ -129,7 +126,8 @@
     padding: 0 1rem;
     color: #fff;
     cursor: pointer;
-    outline: none;
+    outline: none;  
+
 
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
@@ -138,11 +136,13 @@
 }
 
 .gpt3__header-content__button_group img{
-    height: 50px;
+    height: 70px;
+    margin: 20px;
+    display: block;
 }
 
 .gpt3__header-image {
-    flex: 1;
+    flex: 0;
     display: flex;
     justify-content: center;
     align-items: center;

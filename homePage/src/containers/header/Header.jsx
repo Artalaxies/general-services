@@ -19,9 +19,9 @@ const Header = () => (
       </div> */}
 
       <div className="gpt3__header-content__button_group">
-        <button type="button"><img src={antitoxicLogo} />Antitoxic</button>
-        <button type="button"><img src={artalaxiesWhiteLogo} />Marketplace</button>
-        <button type="button"><img src={communityLogo} />Community</button>
+        <button type="button"><img src={antitoxicLogo} /> Antitoxic </button>
+        <button type="button"><img src={artalaxiesWhiteLogo} /> Marketplace </button>
+        <button type="button"><img src={communityLogo} /> Community </button>
       </div>
       <div className="gpt3__header-content__people">
         <img src={people} />
