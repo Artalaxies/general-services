@@ -1,7 +1,6 @@
 import React from 'react';
 import people from '../../assets/people.png';
 import antitoxicLogo from '../../assets/antitoxic_logo.png';
-import artalaxiesLogo from '../../assets/artalaxies_logo.png';
 import artalaxiesWhiteLogo from '../../assets/artalaxies_white.png';
 
 import communityLogo from '../../assets/community.png';
@@ -27,10 +26,6 @@ const Header = () => (
         <img src={people} />
         <p>1,600 people requested access a visit in last 24 hours</p>
       </div>
-    </div>
-
-    <div className="gpt3__header-image">
-      <img src={artalaxiesLogo} />
     </div>
   </div>
 );

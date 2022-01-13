@@ -8,7 +8,7 @@ const CTA = () => (
       <h3>Register Today & start exploring the endless possibilities.</h3>
     </div>
     <div className="gpt3__cta-btn">
-      <a href="https://comidaforfamilias.com">
+      <a href="https://testnets.artalaxies.ml/">
         <button type="button">Get Started</button>
       </a>
     </div>

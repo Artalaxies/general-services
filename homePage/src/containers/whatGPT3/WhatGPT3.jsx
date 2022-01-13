@@ -5,7 +5,7 @@ import './whatGPT3.css';
 const WhatGPT3 = () => (
   <div className="gpt3__whatgpt3 section__margin" id="wgpt3">
     <div className="gpt3__whatgpt3-feature">
-      <Feature title="What do we do?" text="Artaliaxies is using the Web 3 to build decentralized application for the next generation of internet experience. Use our platforms to secure and mint your artwork and products with blockchain technology." />
+      <Feature title="What we focus on?" text="Artaliaxies is using the Web 3 to build decentralized application for the next generation of internet experience. Use our platforms to secure and mint your artwork and products with blockchain technology." />
     </div>
     <div className="gpt3__whatgpt3-heading">
       <h1 className="gradient__text">The possibilities are beyond your imagination</h1>
