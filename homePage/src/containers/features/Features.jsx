@@ -4,27 +4,23 @@ import './features.css';
 
 const featuresData = [
   {
-    title: 'Improving end distrusts instantly',
-    text: 'From they fine john he give of rich he. They age and draw mrs like. Improving end distrusts may instantly was household applauded.',
+    title: 'NFT Artists',
+    text: 'Secure your artworks by minting them and creating NFT derivitives that you can share with losing original ownership. ',
   },
   {
-    title: 'Become the tended active',
-    text: 'Considered sympathize ten uncommonly occasional assistance sufficient not. Letter of on become he tended active enable to.',
+    title: 'Merchants',
+    text: 'Get permission to use artwork by buying derivative tokens and printing graphics onto whatever products you want to make. ',
   },
   {
-    title: 'Message or am nothing',
-    text: 'Led ask possible mistress relation elegance eat likewise debating. By message or am nothing amongst chiefly address.',
-  },
-  {
-    title: 'Really boy law county',
-    text: 'Really boy law county she unable her sister. Feet you off its like like six. Among sex are leave law built now. In built table in an rapid blush..',
+    title: 'Musicians',
+    text: "Sometimes streaming music isn't enough, and when you want to work with a record label company you only earn 50% of the total revenue. Take back ownership by integrating blockchain into your music.",
   },
 ];
 
 const Features = () => (
   <div className="gpt3__features section__padding" id="features">
     <div className="gpt3__features-heading">
-      <h1 className="gradient__text">The Future is Now and You Just Need to Realize It. Step into Future Today. & Make it Happen.</h1>
+      <h1 className="gradient__text">Artists. Merchants. NFT Enthusiasts.  The Future is Now. </h1>
       <p>Request Early Access to Get Started</p>
     </div>
     <div className="gpt3__features-container">
