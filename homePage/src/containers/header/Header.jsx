@@ -11,7 +11,6 @@ const Header = () => (
     <div className="header-content">
       <h1 className="gradient__text">Enhance Web 3.0 with Artalaxies Platform to the Multi-Metaverses</h1>
       <p>Artalaxies LLC is a software development company. We are focusing on using the Web 3.0 tech stack to build decentralized applications for the next generation of internet experience. Discover the use of blockchain for existing problems. Use our platforms to secure and mint your own artwork and products with blockchain technology, and explore the idea of how to bring NFTs into the physical world.</p>
-
       {/* <div className="header-content__input">
         <input type="email" placeholder="Your Email Address" />
         <button type="button">Get Started</button>
