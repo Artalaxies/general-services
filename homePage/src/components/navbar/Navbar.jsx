@@ -15,9 +15,9 @@ const Navbar = () => {
         </div>
         <div className="navbar-links_container">
           <p><a href="#home">Home</a></p>
-          <p><a href="#wgpt3">What we focus on?</a></p>
+          <p><a href="#focus">What we focus on?</a></p>
           {/* <p><a href="#possibility">Open AI</a></p> */}
-          <p><a href="#features">Case Studies</a></p>
+          <p><a href="#features">Who is This For?</a></p>
           {/* <p><a href="#blog">Library</a></p> */}
         </div>
       </div>
@@ -33,9 +33,9 @@ const Navbar = () => {
         <div className="navbar-menu_container scale-up-center">
           <div className="navbar-menu_container-links">
             <p><a href="#home">Home</a></p>
-            <p><a href="#wgpt3">What we focus on?</a></p>
+            <p><a href="#focus">What we focus on?</a></p>
             {/* <p><a href="#possibility">Open AI</a></p> */}
-            <p><a href="#features">Case Studies</a></p>
+            <p><a href="#features">Who is This For?</a></p>
             {/* <p><a href="#blog">Library</a></p> */}
           </div>
           {/* <div className="navbar-menu_container-links-sign">

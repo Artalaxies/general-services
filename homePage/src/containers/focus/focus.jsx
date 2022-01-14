@@ -3,7 +3,7 @@ import Feature from '../../components/feature/Feature';
 import './focus.css';
 
 const Focus = () => (
-  <div className="focus section__margin" id="wgpt3">
+  <div className="focus section__margin" id="focus">
     <div className="focus-feature">
       <Feature title="What we focus on?" text="Artaliaxies is using the Web 3 to build decentralized application for the next generation of internet experience. Use our platforms to secure and mint your artwork and products with blockchain technology." />
     </div>

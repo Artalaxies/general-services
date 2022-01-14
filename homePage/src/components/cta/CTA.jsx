@@ -5,7 +5,7 @@ const CTA = () => (
   <div className="cta">
     <div className="cta-content">
       <p>Request Early Access to Get Started</p>
-      <h3>Register Today & start exploring the endless possibilities.</h3>
+      <h3>Start exploring the endless possibilities.</h3>
     </div>
     <div className="cta-btn">
       <a href="https://testnets.artalaxies.ml/">
