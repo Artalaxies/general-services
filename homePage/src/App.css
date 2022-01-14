@@ -91,3 +91,10 @@ a {
     margin: 4rem 2rem;
   }  
 }
+
+.logo {
+  color: #fff;
+  font-weight: 600;
+  font-size: 2rem;
+  font-family: 'Roboto', sans-serif;
+}
