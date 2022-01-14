@@ -1,7 +1,7 @@
 import React from 'react';
-import antitoxicLogo from '../../assets/antitoxic_logo.png';
-import artalaxiesWhiteLogo from '../../assets/artalaxies_white.png';
-import communityLogo from '../../assets/community.png';
+// import antitoxicLogo from '../../assets/antitoxic_logo.png';
+// import artalaxiesWhiteLogo from '../../assets/artalaxies_white.png';
+// import communityLogo from '../../assets/community.png';
 import ai from '../../assets/artalaxies_logo.png';
 
 import './header.css';
@@ -16,11 +16,11 @@ const Header = () => (
         <button type="button">Get Started</button>
       </div> */}
 
-      <div className="header-content__button_group">
+      {/* <div className="header-content__button_group">
         <button type="button"><img src={antitoxicLogo} /> Antitoxic </button>
         <button type="button"><img src={artalaxiesWhiteLogo} /> Marketplace </button>
         <button type="button"><img src={communityLogo} /> Community </button>
-      </div>
+      </div> */}
       {/* <div className="header-content__people">
         <img src={people} />
         <p>1,600 people requested access a visit in last 24 hours</p>

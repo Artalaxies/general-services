@@ -1,8 +1,9 @@
 import React from 'react';
 import './feature.css';
 
-const Feature = ({ title, text }) => (
+const Feature = ({ title, text, img }) => (
   <div className="features-container__feature">
+    { img ? <img src={img} /> : <></>}
     <div className="features-container__feature-title">
       <div />
       <h1>{title}</h1>

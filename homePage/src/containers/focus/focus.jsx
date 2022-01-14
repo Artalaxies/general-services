@@ -1,6 +1,9 @@
 import React from 'react';
 import Feature from '../../components/feature/Feature';
 import './focus.css';
+import antitoxicLogo from '../../assets/antitoxic_logo.png';
+import artalaxiesWhiteLogo from '../../assets/artalaxies_white.png';
+import communityLogo from '../../assets/community.png';
 
 const Focus = () => (
   <div className="focus section__margin" id="focus">
@@ -12,9 +15,9 @@ const Focus = () => (
       {/* <p>Explore the Library</p> */}
     </div>
     <div className="focus-container">
-      <Feature title="Music" text="Antitoxics is a decentralized music player that is able to integrate with consistent gross profit pattern to creators. " />
-      <Feature title="Maketplace" text="Artalaxies is a decentralized marketplace that focuses on providing anonomyous art designers a platform to produce and protect their NFT derivatives." />
-      <Feature title="Community" text="Join our community so communicate with others on how they were successful on the platform. You can also provide feedback to the developers and designers and contribute to future changes." />
+      <Feature img={antitoxicLogo} title="Music" text="Antitoxics is a decentralized music player that is able to integrate with consistent gross profit pattern to creators. " />
+      <Feature img={artalaxiesWhiteLogo} title="Maketplace" text="Artalaxies is a decentralized marketplace that focuses on providing anonomyous art designers a platform to produce and protect their NFT derivatives." />
+      <Feature img={communityLogo} title="Community" text="Join our community so communicate with others on how they were successful on the platform. You can also provide feedback to the developers and designers and contribute to future changes." />
     </div>
   </div>
 );
