@@ -23,7 +23,7 @@ const Navbar = () => {
       </div>
       <div className="navbar-sign">
         {/* <p>Sign in</p> */}
-        <button type="button" onClick={() => window.open('https://testnets.artalaxies.ml/')}>Lauch Dapp</button>
+        <button type="button" onClick={() => window.open('https://testnets.artalaxies.ml/')}>Lauch Early Access</button>
       </div>
       <div className="navbar-menu">
         {toggleMenu
@@ -38,6 +38,10 @@ const Navbar = () => {
             <p><a href="#features">Who is This For?</a></p>
             {/* <p><a href="#blog">Library</a></p> */}
           </div>
+          {/* <div className="navbar-sign">
+            { <p>Sign in</p> }
+            <button type="button" onClick={() => window.open('https://testnets.artalaxies.ml/')}>Lauch Early Access</button>
+          </div> */ }
           {/* <div className="navbar-menu_container-links-sign">
             <p>Sign in</p>
             <button type="button">Sign up</button>
