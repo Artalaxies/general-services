@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/static/css/main.896525b1.chunk.css",
-    "main.js": "/static/js/main.b85d81f7.chunk.js",
-    "main.js.map": "/static/js/main.b85d81f7.chunk.js.map",
+    "main.js": "/static/js/main.c8fa4366.chunk.js",
+    "main.js.map": "/static/js/main.c8fa4366.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.5a03503f.js",
     "runtime-main.js.map": "/static/js/runtime-main.5a03503f.js.map",
-    "static/js/2.aaa66ef4.chunk.js": "/static/js/2.aaa66ef4.chunk.js",
-    "static/js/2.aaa66ef4.chunk.js.map": "/static/js/2.aaa66ef4.chunk.js.map",
+    "static/js/2.9c04f78f.chunk.js": "/static/js/2.9c04f78f.chunk.js",
+    "static/js/2.9c04f78f.chunk.js.map": "/static/js/2.9c04f78f.chunk.js.map",
     "index.html": "/index.html",
     "static/css/main.896525b1.chunk.css.map": "/static/css/main.896525b1.chunk.css.map",
-    "static/js/2.aaa66ef4.chunk.js.LICENSE.txt": "/static/js/2.aaa66ef4.chunk.js.LICENSE.txt",
+    "static/js/2.9c04f78f.chunk.js.LICENSE.txt": "/static/js/2.9c04f78f.chunk.js.LICENSE.txt",
     "static/media/antitoxic_logo.0b5d1d95.png": "/static/media/antitoxic_logo.0b5d1d95.png",
     "static/media/artalaxies_logo.e1d7f697.png": "/static/media/artalaxies_logo.e1d7f697.png",
     "static/media/artalaxies_white.94571292.png": "/static/media/artalaxies_white.94571292.png",
@@ -23,8 +23,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.5a03503f.js",
-    "static/js/2.aaa66ef4.chunk.js",
+    "static/js/2.9c04f78f.chunk.js",
     "static/css/main.896525b1.chunk.css",
-    "static/js/main.b85d81f7.chunk.js"
+    "static/js/main.c8fa4366.chunk.js"
   ]
 }
