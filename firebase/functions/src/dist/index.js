@@ -37,7 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var functions = require("firebase-functions");
-var authDao_1 = require("artalaxies-backend/src/models/dao/firebase/authDao");
+var authDao_1 = require("./models/dao/firebase/authDao");
 var corsLib = require('cors');
 // const metaUtil = require('@metamask/eth-sig-util');
 // const multiformats = require('multiformats/cid');

@@ -1,7 +1,8 @@
+/* eslint-disable no-tabs */
+/* eslint-disable max-len */
 import * as functions from "firebase-functions";
-import {getLatestNonce} from 'artalaxies-backend/src/models/dao/firebase/authDao';
-
-const corsLib = require('cors');
+import {getLatestNonce} from "./models/dao/firebase/authDao";
+import corsLib from "cors";
 // const metaUtil = require('@metamask/eth-sig-util');
 // const multiformats = require('multiformats/cid');
 // const sha2 = require('multiformats/hashes/sha2');
@@ -9,7 +10,7 @@ const corsLib = require('cors');
 // const  UnixFS = require('ipfs-unixfs');
 
 const cors = corsLib({
-	origin: true,
+  origin: true,
 });
 
 
@@ -20,8 +21,6 @@ const cors = corsLib({
 //   functions.logger.info("Hello logs!", {structuredData: true});
 //   response.send("Hello from Firebase!");
 // });
-
-
 
 
 // exports.renameToCID = functions.storage.bucket('art-planet.appspot.com').object().onFinalize(async (object) => {
@@ -36,7 +35,7 @@ const cors = corsLib({
 // 	// console.log(data)
 // 	const bytes = dagPB.encode({Data: new UnixFS.UnixFS({type:'file',data: data.pop()}).marshal(),Links:[]});
 // 	console.log(bytes);
-	
+
 // 	const hash = await sha2.sha256.digest(bytes);
 
 // 	const cid = multiformats.CID.createV0(hash);
@@ -47,26 +46,25 @@ const cors = corsLib({
 // });
 
 
-
 exports.getNonce = functions.https.onRequest((request, response) =>
-	cors(request, response, async () => {
-		try {
-			if (request.method !== 'POST') {
-				return response.status(403).send('Not accepted request type');
-			}
+  cors(request, response, async () => {
+    try {
+      if (request.method !== "POST") {
+        return response.status(403).send("Not accepted request type");
+      }
 
-			const userDoc = await getLatestNonce(request.body.address)
-            
-            if(!request.body.address && userDoc.data !== undefined)
-				return response.status(200).json({ nonce: userDoc.data()});
-			else{
-				return response.sendStatus(400);
-            }
-		} catch (err) {
-			console.log(err);
-			return response.sendStatus(500);
-		}
-	})
+      const userDoc = await getLatestNonce(request.body.address);
+
+      if (!request.body.address && userDoc.data !== undefined) {
+        return response.status(200).json({nonce: userDoc.data()});
+      } else {
+        return response.sendStatus(400);
+      }
+    } catch (err) {
+      console.log(err);
+      return response.sendStatus(500);
+    }
+  })
 );
 
 // exports.verifySignedMessage = functions.https.onRequest((request, response) =>
@@ -102,7 +100,7 @@ exports.getNonce = functions.https.onRequest((request, response) =>
 // 						nonce: Math.floor(Math.random() * 1000000).toString(),
 // 					});
 // 					// Create a custom token for the specified address
-// 					const firebaseToken = await admin.auth().createCustomToken(address); // TO-DO: set time limit 
+// 					const firebaseToken = await admin.auth().createCustomToken(address); // TO-DO: set time limit
 // 					// Return the token
 // 					return response.status(200).json({ token: firebaseToken });
 // 				} else {
