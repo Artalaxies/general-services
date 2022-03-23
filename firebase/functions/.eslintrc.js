@@ -5,8 +5,7 @@ module.exports = {
     node: true,
   },
   extends: [
-    "eslint:recommended",
-    "plugin:import/errors",
+    // "eslint:recommended",
     "plugin:import/warnings",
     "plugin:import/typescript",
     "google",
@@ -27,5 +26,6 @@ module.exports = {
   rules: {
     "quotes": ["error", "double"],
     "import/no-unresolved": 0,
+    "linebreak-style": "off"
   },
 };
