@@ -1,0 +1,24 @@
+.App {
+	text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.App button {
+	border: none;
+	border-radius: 8px;
+  background-color: salmon;
+  box-sizing: border-box;
+  padding: 1rem 2rem;
+  color: #fff;
+  transition: ease-out 0.3s;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+
+.App button:hover {
+	transform: translateY(-20px);
+}
+
