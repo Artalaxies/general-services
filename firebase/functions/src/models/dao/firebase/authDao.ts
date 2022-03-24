@@ -10,13 +10,14 @@ import {generatedNonce} from "../../../utilities/nonce";
  */
 export async function getLatestNonce(address: string):
 Promise<DataSnapshot<string>> {
-  const doc = await database.admin.firestore().collection("wallets")
+  const doc = await database.admin.firestore().collection("web3_addresses")
       .doc(address)
       .get();
   if (doc.exists) {
-    return new DataSnapshot(() => doc.data()?.latest_nonce);
+    return new DataSnapshot(() => doc.data()?.latest_nonce, true, 3000);
   } else {
-    return new DataSnapshot();
+    await setLatestNonce(address);
+    return await getLatestNonce(address);
   }
 }
 
@@ -26,7 +27,7 @@ Promise<DataSnapshot<string>> {
  */
 export async function setLatestNonce(address: string) {
   const newNonce = generatedNonce().toString();
-  database.admin.firestore().collection("wallets")
+  await database.admin.firestore().collection("web3_addresses")
       .doc(address)
-      .set({latest_nonce: newNonce});
+      .update({latest_nonce: newNonce});
 }
