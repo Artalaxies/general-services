@@ -1,5 +1,5 @@
 import {DataSnapshot} from "../../entities/dataSnapshot";
-import * as database from "./database";
+import * as database from "./setting";
 import {generatedNonce} from "../../../utilities/nonce";
 
 
