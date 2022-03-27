@@ -21,9 +21,6 @@
     "sotrage": {
       "port": 9199
     },
-    "hosting": {
-      "port": 5000
-    },
     "pubsub": {
       "port": 8085
     },
@@ -41,20 +38,6 @@
   "firestore": {
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
-  },
-  "hosting": {
-    "public": "public",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
   },
   "storage": {
     "rules": "storage.rules"
