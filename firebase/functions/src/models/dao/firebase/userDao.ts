@@ -1,7 +1,8 @@
-import * as database from "./setting";
+import {admin} from "./setting";
 import {DataSnapshot} from "../../entities/dataSnapshot";
 import {Profile} from "../../entities/profile";
-
+import {getLatestNonce} from "./web3AuthorizationDao";
+import {isVerified} from "../../../utilities/nonce";
 
 /**
  * Adds two numbers together.
@@ -9,7 +10,7 @@ import {Profile} from "../../entities/profile";
  * @return {Promise<DataSnapshot<Profile>>} The sum of the two numbers.
  */
 export async function getProfile(id: string): Promise<DataSnapshot<Profile>> {
-  const doc = await database.admin.firestore().collection("users")
+  const doc = await admin.firestore().collection("users")
       .doc(id)
       .get();
   if (doc.exists) {
@@ -20,13 +21,9 @@ export async function getProfile(id: string): Promise<DataSnapshot<Profile>> {
       email: data?.email,
       latest_event: data?.latest_event,
     };
-    return new DataSnapshot(
-        () => pro, true, 2000
-    );
+    return new DataSnapshot(true, 2000, () => pro);
   } else {
-    return new DataSnapshot(
-        undefined, false, 2004
-    );
+    return new DataSnapshot(false, 2004, undefined);
   }
 }
 
@@ -38,7 +35,7 @@ export async function getProfile(id: string): Promise<DataSnapshot<Profile>> {
  */
 export async function setProfile(profile: Profile): Promise<void> {
   if (profile.username !== undefined) {
-    await database.admin.firestore().collection("users")
+    await admin.firestore().collection("users")
         .doc(profile.id)
         .set({username: profile.username})
         .catch((reason: unknown) => {
@@ -46,7 +43,7 @@ export async function setProfile(profile: Profile): Promise<void> {
         });
   }
   if (profile.email !== undefined) {
-    await database.admin.firestore().collection("users")
+    await admin.firestore().collection("users")
         .doc(profile.id)
         .set({email: profile.email})
         .catch((reason: unknown) => {
@@ -61,30 +58,57 @@ export async function setProfile(profile: Profile): Promise<void> {
  * @return {Promise<DataSnapshot<string>>} The sum of the two numbers.
  */
 export async function getName(id: string): Promise<DataSnapshot<string>> {
-  const doc = await database.admin.firestore().collection("users")
+  const doc = await admin.firestore().collection("users")
       .doc(id)
       .get();
   if (doc.exists) {
-    return new DataSnapshot( ()=> doc.data()?.username, true, 2000 );
+    return new DataSnapshot(true, 2000, ()=> doc.data()?.username);
   } else {
-    return new DataSnapshot(
-        undefined, false, 2004
-    );
+    return new DataSnapshot(false, 2004, undefined);
   }
 }
 
 
 /**
- * Adds two numbers together.
+ * get name.
+ * @param {string} address The first number.
+ * @param {string} signature The first number.
+ * @param {string} username The first number.
+ * @param {string} email The first number.
+ * @return {Promise<DataSnapshot<string>>} The sum of the two numbers.
+ */
+export async function registerAccount(
+    address: string,
+    signature: string,
+    username?: string,
+    email?: string): Promise<DataSnapshot<string>> {
+  const nonce = await getLatestNonce(address);
+  if (isVerified(address, nonce.data?.() || "", signature)) {
+    return await admin.auth().createUser({
+      displayName: username || "",
+      email: email || "",
+    }).then((userRecord)=> {
+      return new DataSnapshot( true, 2000, ()=> userRecord.uid);
+    }).catch((error)=> {
+      return new DataSnapshot(false, 2007, undefined);
+    });
+  } else {
+    return new DataSnapshot(false, 2004, undefined);
+  }
+}
+
+
+/**
+ * getCustomToken.
  * @param {string} address The first number.
  * @return {string} The sum of the two numbers.
  */
 export async function getCustomToken(address: string):
  Promise<DataSnapshot<string>> {
-  const token = await database.admin.auth().createCustomToken(address);
+  const token = await admin.auth().createCustomToken(address);
   if (!token) {
     console.log("Genreate token failed");
-    return new DataSnapshot(undefined, false, 2001);
+    return new DataSnapshot(false, 2001, undefined);
   }
-  return new DataSnapshot(() => token, true, 2000);
+  return new DataSnapshot(true, 2000, () => token);
 }

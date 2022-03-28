@@ -1,10 +1,10 @@
 /* eslint-disable no-tabs */
 /* eslint-disable max-len */
 import * as functions from "firebase-functions";
-import {getLatestNonce, setLatestNonce} from "./models/dao/firebase/authDao";
+import {getLatestNonce, setLatestNonce} from "./models/dao/firebase/web3AuthorizationDao";
 import {getCustomToken} from "./models/dao/firebase/userDao";
 import corsLib from "cors";
-import * as metaUtil from "@metamask/eth-sig-util";
+import * as nonce from "./utilities/nonce";
 // const multiformats = require('multiformats/cid');
 // const sha2 = require('multiformats/hashes/sha2');
 // const dagPB = require('@ipld/dag-pb');
@@ -88,15 +88,9 @@ exports.verifySignedMessage = functions.https.onRequest((request, response) =>
         const existingNonce :string = (userDoc.data || (() => ""))();
         console.log("existingNonce is: ", existingNonce);
         // Recover the address of the account used to create the given Ethereum signature.
-        const recoveredAddress = metaUtil.recoverPersonalSignature({
-          data: `0x${toHex(existingNonce)}`,
-          signature: sig,
-        });
-        console.log("data is: ", `0x${toHex(existingNonce)}`);
-        // console.log("recoveredAddress is: ", recoveredAddress);
-        // console.log("address is: ", address);
+
         // See if that matches the address the user is claiming the signature is from
-        if (recoveredAddress === address.toLowerCase()) {
+        if (nonce.isVerified(address, existingNonce, sig)) {
           // The signature was verified - update the nonce to prevent replay attacks
           // update nonce
           console.log("yooo");
@@ -129,10 +123,3 @@ exports.verifySignedMessage = functions.https.onRequest((request, response) =>
   })
 );
 
-// eslint-disable-next-line require-jsdoc
-function toHex(stringToConvert:string):string {
-  return stringToConvert
-      .split("")
-      .map((c) => c.charCodeAt(0).toString(16).padStart(2, "0"))
-      .join("");
-}

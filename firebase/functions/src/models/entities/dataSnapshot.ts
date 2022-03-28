@@ -27,10 +27,15 @@ export class DataSnapshot<T> {
      */
   protected readTime?: number;
 
+  /**
+     * message about the data.
+     */
+  protected message?: string;
 
-  constructor(data?: () => T, exists = false, status = 0) {
+  constructor(exists = false, status = 0, data?: () => T, message?: string) {
     this.exists = exists;
     this.status = status;
+    this.message = message;
     if (data !== undefined) {
       this.data = () => {
         this.readTime = Date.now();
