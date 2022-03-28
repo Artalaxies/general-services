@@ -14,7 +14,7 @@ Promise<DataSnapshot<string>> {
       .doc(address)
       .get();
   if (doc.exists) {
-    return new DataSnapshot(() => doc.data()?.latest_nonce, true, 3000);
+    return new DataSnapshot(true, 3000, () => doc.data()?.latest_nonce);
   } else {
     await setLatestNonce(address);
     return await getLatestNonce(address);
@@ -25,7 +25,7 @@ Promise<DataSnapshot<string>> {
  * Adds two numbers together.
  * @param {string} address The first number.
  */
-export async function setLatestNonce(address: string) {
+export async function setLatestNonce(address: string): Promise<void> {
   const newNonce = generatedNonce().toString();
   await database.admin.firestore().collection("web3_addresses")
       .doc(address)
