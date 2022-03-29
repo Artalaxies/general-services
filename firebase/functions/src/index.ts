@@ -1,12 +1,9 @@
 /* eslint-disable no-tabs */
 /* eslint-disable max-len */
-import * as acccount from "./controllers/account/account";
-import * as profile from "./controllers/account/profile";
-import * as web3Auth from "./controllers/web3Auth/authorization";
-
-acccount;
-profile;
-web3Auth;
+export * from "./controllers/account/account";
+export * from "./controllers/account/profile";
+export * from "./controllers/web3Auth/authorization";
+export * from "./controllers/web3Auth/connect_account";
 
 
 // const multiformats = require('multiformats/cid');

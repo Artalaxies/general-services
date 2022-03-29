@@ -117,6 +117,7 @@ exports.disconnectWeb3addressFromAccount = functions.https
           if (request.method !== "POST") {
             return response.status(403).send("Not accepted request type");
           }
+          return response.status(200);
         } catch (err) {
           console.log(err);
           return response.sendStatus(500);
