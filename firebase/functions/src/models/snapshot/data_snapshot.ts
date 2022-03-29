@@ -20,7 +20,32 @@ export class DataSnapshot<T> {
      */
   readonly createTime?: number;
 
-  readonly status: number;
+
+  /**
+     * state ID.
+     */
+  readonly stateId: number;
+
+  /**
+     * success checking.
+     * @return {boolean} nonce numbers.
+     */
+  isSuccess(): boolean {
+    return this.stateId % 10 == 0;
+  }
+
+  /**
+   * success checking.
+   * @return {boolean} nonce numbers.
+   */
+  isWarning(): boolean {
+    return this.stateId % 1000 >= 500 && this.isSuccess();
+  }
+
+  /**
+     * message about the data.
+     */
+  readonly message?: string;
 
   /**
      * The time this snapshot was read.
@@ -28,13 +53,16 @@ export class DataSnapshot<T> {
   protected readTime?: number;
 
   /**
-     * message about the data.
-     */
-  protected message?: string;
+     * get read time.
+     * @return {number} nonce numbers.
+  */
+  getReadTime(): number | undefined {
+    return this.readTime;
+  }
 
-  constructor(exists = false, status = 0, data?: () => T, message?: string) {
+  constructor(exists = false, stateId = 0, data?: () => T, message?: string) {
     this.exists = exists;
-    this.status = status;
+    this.stateId = stateId;
     this.message = message;
     if (data !== undefined) {
       this.data = () => {

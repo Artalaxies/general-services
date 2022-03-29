@@ -1,10 +1,10 @@
 import {admin} from "./setting";
-import {DataSnapshot} from "../../entities/dataSnapshot";
+import {DataSnapshot} from "../../snapshot/data_snapshot";
 import {Profile} from "../../entities/profile";
-import {getLatestNonce} from "./web3AuthorizationDao";
-import {isVerified} from "../../../utilities/nonce";
-import {InvalidWalletAddressErrorDataSnapshot,
-  validateAddress} from "../../../utilities/address";
+import {getLatestNonce} from "./web3_dao";
+import {isValidatedMessage} from "../../../utilities/nonce";
+import {validateAddress} from "../../../utilities/address";
+import {InvalidWalletAddressErrorDataSnapshot} from "../../snapshot/address";
 
 /**
  * Adds two numbers together.
@@ -88,17 +88,21 @@ export async function registerAccount(
     return new InvalidWalletAddressErrorDataSnapshot<string>();
   }
   const nonce = await getLatestNonce(address);
-  if (isVerified(address, nonce.data?.() || "", signature)) {
+  if (!nonce.isSuccess() ) {
+    return nonce;
+  }
+  if (isValidatedMessage(address, nonce.data?.() || "", signature)) {
     return await admin.auth().createUser({
       displayName: username || "",
       email: email || "",
     }).then((userRecord)=> {
       return new DataSnapshot( true, 2000, ()=> userRecord.uid);
-    }).catch((error)=> {
-      return new DataSnapshot(false, 2007, undefined);
+    }).catch((err)=> {
+      return new DataSnapshot(false, 2007, undefined, err);
     });
   } else {
-    return new DataSnapshot(false, 2004, undefined);
+    return new DataSnapshot(false, 2005,
+        undefined, "Signature incorrect Error");
   }
 }
 

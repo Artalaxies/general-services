@@ -17,7 +17,7 @@ export function generatedNonce():number {
  * @param {string} sigature The first number.
  * @return {boolean} nonce numbers.
  */
-export function isVerified(
+export function isValidatedMessage(
     address:string,
     message: string,
     sigature: string): boolean {

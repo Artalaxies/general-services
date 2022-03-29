@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import {getLatestNonce, setLatestNonce}
-  from "../../models/dao/firebase/web3AuthorizationDao";
-import {getCustomToken} from "../../models/dao/firebase/userDao";
+  from "../../models/dao/firebase/web3_dao";
+import {getCustomToken} from "../../models/dao/firebase/user_dao";
 import corsLib from "cors";
 import * as nonce from "../../utilities/nonce";
 
@@ -23,10 +23,11 @@ exports.getNonce = functions.https.onRequest((request, response) =>
           request.body.address, "userDoc",
           userDoc.data, {structuredData: true});
 
-      if (request.body.address && userDoc.data) {
-        return response.status(200).json({nonce: userDoc.data()});
+      if (request.body.address && userDoc.exists) {
+        return response.status(200).json({nonce: userDoc.data?.()});
       } else {
-        return response.sendStatus(400);
+        return response.sendStatus(400)
+            .json({status: userDoc.stateId, message: userDoc.message});
       }
     } catch (err) {
       console.log(err);
@@ -50,24 +51,21 @@ exports.verifySignedMessage = functions.https.onRequest((request, response) =>
       // Get the nonce for this address
       const userDoc = await getLatestNonce(request.body.address);
       // const userDoc = await userDocRef.get();
-      if (userDoc.exists) {
-        const existingNonce :string = (userDoc.data || (() => ""))();
+      if (userDoc.isSuccess()) {
+        const existingNonce :string = userDoc.data?.() || "";
         console.log("existingNonce is: ", existingNonce);
         // Recover the address of the account used to
         // create the given Ethereum signature.
 
         // See if that matches the address the user is
         // claiming the signature is from
-        if (nonce.isVerified(address, existingNonce, sig)) {
+        if (nonce.isValidatedMessage(address, existingNonce, sig)) {
         // The signature was verified
         // - update the nonce to prevent replay attacks
         // update nonce
-          console.log("yooo");
-          await setLatestNonce(request.body.adress);
+          await setLatestNonce(request.body.adress,
+              nonce.generatedNonce().toString());
           // Create a custom token for the specified address
-
-          console.log("yooo1");
-
 
           const tokenDataSnapshot = await getCustomToken(request.body.address);
           // TO-DO: set time limit
