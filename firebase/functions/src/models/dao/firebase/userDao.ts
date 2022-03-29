@@ -3,6 +3,8 @@ import {DataSnapshot} from "../../entities/dataSnapshot";
 import {Profile} from "../../entities/profile";
 import {getLatestNonce} from "./web3AuthorizationDao";
 import {isVerified} from "../../../utilities/nonce";
+import {InvalidWalletAddressErrorDataSnapshot,
+  validateAddress} from "../../../utilities/address";
 
 /**
  * Adds two numbers together.
@@ -82,6 +84,9 @@ export async function registerAccount(
     signature: string,
     username?: string,
     email?: string): Promise<DataSnapshot<string>> {
+  if (!validateAddress(address)) {
+    return new InvalidWalletAddressErrorDataSnapshot<string>();
+  }
   const nonce = await getLatestNonce(address);
   if (isVerified(address, nonce.data?.() || "", signature)) {
     return await admin.auth().createUser({
@@ -105,6 +110,9 @@ export async function registerAccount(
  */
 export async function getCustomToken(address: string):
  Promise<DataSnapshot<string>> {
+  if (!validateAddress(address)) {
+    return new InvalidWalletAddressErrorDataSnapshot<string>();
+  }
   const token = await admin.auth().createCustomToken(address);
   if (!token) {
     console.log("Genreate token failed");
