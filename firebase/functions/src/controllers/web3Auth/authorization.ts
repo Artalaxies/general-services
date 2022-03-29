@@ -4,6 +4,7 @@ import {getLatestNonce, setLatestNonce}
 import {getCustomToken} from "../../models/dao/firebase/user_dao";
 import corsLib from "cors";
 import * as nonce from "../../utilities/nonce";
+import {validateAddress} from "../../utilities/address";
 
 
 const cors = corsLib({
@@ -22,9 +23,13 @@ exports.getNonce = functions.https.onRequest((request, response) =>
       functions.logger.info("address: ",
           request.body.address, "userDoc",
           userDoc.data, {structuredData: true});
-
-      if (request.body.address && userDoc.exists) {
+      if (userDoc.isSuccess() && request.body.address) {
         return response.status(200).json({nonce: userDoc.data?.()});
+      } else if (userDoc.stateId == 2004 &&
+        validateAddress(request.body.address)) {
+        const newNonce = nonce.generatedNonce().toString();
+        await setLatestNonce(request.body.address, newNonce);
+        return response.status(200).json({nonce: newNonce});
       } else {
         return response.sendStatus(400)
             .json({status: userDoc.stateId, message: userDoc.message});
