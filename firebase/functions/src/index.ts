@@ -1,5 +1,14 @@
 /* eslint-disable no-tabs */
 /* eslint-disable max-len */
+
+
+const useEmulator = true;
+
+if (useEmulator) {
+  process.env["FIRESTORE_EMULATOR_HOST"] = "localhost:8080";
+}
+
+
 export * from "./controllers/account/account";
 export * from "./controllers/account/profile";
 export * from "./controllers/web3Auth/authorization";
