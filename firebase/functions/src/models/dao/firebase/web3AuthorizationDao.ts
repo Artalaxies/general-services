@@ -1,6 +1,8 @@
 import {DataSnapshot} from "../../entities/dataSnapshot";
 import * as database from "./setting";
 import {generatedNonce} from "../../../utilities/nonce";
+import {InvalidWalletAddressErrorDataSnapshot,
+  validateAddress} from "../../../utilities/address";
 
 
 /**
@@ -10,6 +12,9 @@ import {generatedNonce} from "../../../utilities/nonce";
  */
 export async function getLatestNonce(address: string):
 Promise<DataSnapshot<string>> {
+  if (!validateAddress(address)) {
+    return new InvalidWalletAddressErrorDataSnapshot<string>();
+  }
   const doc = await database.admin.firestore().collection("web3_addresses")
       .doc(address)
       .get();
