@@ -1,10 +1,11 @@
-import {DataSnapshot} from "../../snapshot/data_snapshot";
+import {DataSnapshot} from "../../../utilities/snapshot/data_snapshot";
 import {admin} from "./setting";
 import {
   validateAddress} from "../../../utilities/address";
-import {InvalidWalletAddressErrorDataSnapshot} from "../../snapshot/address";
+import {InvalidWalletAddressErrorDataSnapshot}
+  from "../../../utilities/snapshot/address";
 import {AccountNotExistErrorDataSnashot,
-  UnknownAccountErrorDataSnashot} from "../../snapshot/user";
+  UnknownAccountErrorDataSnashot} from "../../../utilities/snapshot/user";
 
 /**
  * Adds two numbers together.

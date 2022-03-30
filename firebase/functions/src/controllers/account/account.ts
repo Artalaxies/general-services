@@ -14,7 +14,7 @@ exports.registerAccount = functions.https
           if (request.method !== "GET") {
             return response.status(403).send("Not accepted request type");
           }
-
+          // TO-DO : Implement this function
           return response.status(200);
         } catch (err) {
           console.log(err);
@@ -29,7 +29,7 @@ exports.deleteAccount = functions.https
           if (request.method !== "POST") {
             return response.status(403).send("Not accepted request type");
           }
-
+          // TO-DO : Implement this function
           return response.status(200);
         } catch (err) {
           console.log(err);

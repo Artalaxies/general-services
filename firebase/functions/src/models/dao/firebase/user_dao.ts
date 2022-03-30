@@ -1,10 +1,11 @@
 import {admin} from "./setting";
-import {DataSnapshot} from "../../snapshot/data_snapshot";
+import {DataSnapshot} from "../../../utilities/snapshot/data_snapshot";
 import {Profile} from "../../entities/profile";
 import {getLatestNonce} from "./web3_dao";
 import {isValidatedMessage} from "../../../utilities/nonce";
 import {validateAddress} from "../../../utilities/address";
-import {InvalidWalletAddressErrorDataSnapshot} from "../../snapshot/address";
+import {InvalidWalletAddressErrorDataSnapshot}
+  from "../../../utilities/snapshot/address";
 
 /**
  * Adds two numbers together.
