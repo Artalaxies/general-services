@@ -18,17 +18,17 @@ exports.getNonce = functions.https.onRequest((request, response) =>
       if (request.method !== "GET") {
         return response.status(403).send("Not accepted request type");
       }
-      const userDoc = await getLatestNonce(request.params.address);
+      const userDoc = await getLatestNonce(<string>request.query.address);
 
       functions.logger.info("address: ",
-          request.body.address, "userDoc",
-          userDoc.data, {structuredData: true});
-      if (userDoc.isSuccess() && request.body.address) {
+      <string>request.query.address, "userDoc",
+      userDoc.data, {structuredData: true});
+      if (userDoc.isSuccess() && <string>request.query.address) {
         return response.status(200).json({nonce: userDoc.data?.()});
       } else if (userDoc.stateId == 2004 &&
-        validateAddress(request.body.address)) {
+        validateAddress(<string>request.query.address)) {
         const newNonce = nonce.generatedNonce().toString();
-        await setLatestNonce(request.body.address, newNonce);
+        await setLatestNonce(<string>request.query.address, newNonce);
         return response.status(200).json({nonce: newNonce});
       } else {
         return response.sendStatus(400)
