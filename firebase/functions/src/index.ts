@@ -2,11 +2,11 @@
 /* eslint-disable max-len */
 
 
-const useEmulator = true;
+// const useEmulator = true;
 
-if (useEmulator) {
-  process.env["FIRESTORE_EMULATOR_HOST"] = "localhost:8080";
-}
+// if (useEmulator) {
+//   process.env["FIRESTORE_EMULATOR_HOST"] = "localhost:8080";
+// }
 
 
 // export * from "./controllers/account/account";
