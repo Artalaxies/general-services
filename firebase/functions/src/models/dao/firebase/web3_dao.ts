@@ -38,11 +38,17 @@ Promise<DataSnapshot<string>> {
   if (!validateAddress(address)) {
     return new InvalidWalletAddressErrorDataSnapshot<string>();
   }
+
   return await admin.firestore().collection("web3_addresses")
-      .doc(address)
-      .update({latest_nonce: nonce}).then((writeResult) => {
+      .doc(address).create({latest_nonce: nonce}).then((writeResult) =>{
         return new DataSnapshot<string>(true, 2000, () => nonce);
-      }).catch((err) => {
-        return new UnknownAccountErrorDataSnashot<string>();
+      }).catch(async (err)=>{
+        return await admin.firestore().collection("web3_addresses")
+            .doc(address)
+            .update({latest_nonce: nonce}).then((writeResult) => {
+              return new DataSnapshot<string>(true, 2000, () => nonce);
+            }).catch((err) => {
+              return new UnknownAccountErrorDataSnashot<string>();
+            });
       });
 }

@@ -68,7 +68,7 @@ exports.verifySignedMessage = functions.https.onRequest((request, response) =>
         // The signature was verified
         // - update the nonce to prevent replay attacks
         // update nonce
-          await setLatestNonce(request.body.adress,
+          await setLatestNonce(request.body.address,
               nonce.generatedNonce().toString());
           // Create a custom token for the specified address
 
