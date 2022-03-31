@@ -9,8 +9,8 @@ if (useEmulator) {
 }
 
 
-export * from "./controllers/account/account";
-export * from "./controllers/account/profile";
+// export * from "./controllers/account/account";
+// export * from "./controllers/account/profile";
 export * from "./controllers/web3Auth/authorization";
 export * from "./controllers/web3Auth/connect_account";
 
