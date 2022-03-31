@@ -15,10 +15,10 @@ const cors = corsLib({
 exports.getNonce = functions.https.onRequest((request, response) =>
   cors(request, response, async () => {
     try {
-      if (request.method !== "POST") {
+      if (request.method !== "GET") {
         return response.status(403).send("Not accepted request type");
       }
-      const userDoc = await getLatestNonce(request.body.address);
+      const userDoc = await getLatestNonce(request.params.address);
 
       functions.logger.info("address: ",
           request.body.address, "userDoc",
