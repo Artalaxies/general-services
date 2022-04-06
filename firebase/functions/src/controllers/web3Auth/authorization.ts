@@ -51,10 +51,10 @@ exports.verifySignedMessage = functions.https.onRequest((request, response) =>
       if (!request.body.address || !request.body.signature) {
         return response.sendStatus(400);
       }
-      const address = request.body.address;
+      const address = request.body.address.toLowerCase();
       const sig = request.body.signature;
       // Get the nonce for this address
-      const userDoc = await getLatestNonce(request.body.address);
+      const userDoc = await getLatestNonce(address);
       // const userDoc = await userDocRef.get();
       if (userDoc.isSuccess()) {
         const existingNonce :string = userDoc.data?.() || "";
@@ -68,11 +68,11 @@ exports.verifySignedMessage = functions.https.onRequest((request, response) =>
         // The signature was verified
         // - update the nonce to prevent replay attacks
         // update nonce
-          await setLatestNonce(request.body.address,
+          await setLatestNonce(address,
               nonce.generatedNonce().toString());
           // Create a custom token for the specified address
 
-          const tokenDataSnapshot = await getCustomToken(request.body.address);
+          const tokenDataSnapshot = await getCustomToken(address);
           // TO-DO: set time limit
           console.log("yooo2");
 
