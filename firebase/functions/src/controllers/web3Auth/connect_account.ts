@@ -1,37 +1,30 @@
-import * as functions from "firebase-functions";
-import corsLib from "cors";
+import {onRequest} from "../../utilities/https";
 
-const cors = corsLib({
-  origin: true,
+
+// TO-DO
+exports.bindWeb3AddressToAccount = onRequest( async (request, response) =>{
+  try {
+    if (request.method !== "POST") {
+      return response.status(403).send("Not accepted request type");
+    }
+
+    return response.status(200);
+  } catch (err) {
+    console.log(err);
+    return response.sendStatus(500);
+  }
 });
 
-
-exports.bindWeb3AddressToAccount = functions.https
-    .onRequest((request, response) =>
-      cors(request, response, () => {
-        try {
-          if (request.method !== "POST") {
-            return response.status(403).send("Not accepted request type");
-          }
-
-          return response.status(200);
-        } catch (err) {
-          console.log(err);
-          return response.sendStatus(500);
+// TO-DO
+exports.disconnectWeb3addressFromAccount = onRequest(
+    async (request, response) => {
+      try {
+        if (request.method !== "POST") {
+          return response.status(403).send("Not accepted request type");
         }
-      }));
-
-
-exports.disconnectWeb3addressFromAccount = functions.https
-    .onRequest((request, response) =>
-      cors(request, response, () => {
-        try {
-          if (request.method !== "POST") {
-            return response.status(403).send("Not accepted request type");
-          }
-          return response.status(200);
-        } catch (err) {
-          console.log(err);
-          return response.sendStatus(500);
-        }
-      }));
+        return response.status(200);
+      } catch (err) {
+        console.log(err);
+        return response.sendStatus(500);
+      }
+    });

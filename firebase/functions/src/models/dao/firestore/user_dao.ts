@@ -1,4 +1,4 @@
-import {admin} from "./setting";
+import {admin} from "./config";
 import {DataSnapshot} from "../../../utilities/snapshot/data_snapshot";
 import {Profile} from "../../entities/profile";
 import {getLatestNonce} from "./web3_dao";
@@ -108,20 +108,3 @@ export async function registerAccount(
 }
 
 
-/**
- * getCustomToken.
- * @param {string} address The first number.
- * @return {string} The sum of the two numbers.
- */
-export async function getCustomToken(address: string):
- Promise<DataSnapshot<string>> {
-  if (!validateAddress(address)) {
-    return new InvalidWalletAddressErrorDataSnapshot<string>();
-  }
-  const token = await admin.auth().createCustomToken(address);
-  if (!token) {
-    console.log("Genreate token failed");
-    return new DataSnapshot(false, 2001, undefined);
-  }
-  return new DataSnapshot(true, 2000, () => token);
-}

@@ -1,5 +1,5 @@
 import {DataSnapshot} from "../../../utilities/snapshot/data_snapshot";
-import {admin} from "./setting";
+import {admin} from "./config";
 import {
   validateAddress} from "../../../utilities/address";
 import {InvalidWalletAddressErrorDataSnapshot}

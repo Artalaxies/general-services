@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
+import { getFunctions, httpsCallable, connectFunctionsEmulator } from "firebase/functions";
 import { getProvider } from './provider';
 import {
 	getAuth,
@@ -12,7 +13,7 @@ import axios from 'axios';
 
 import './App.css';
 
-const { ethers } = require('ethers');
+// const { ethers } = require('ethers');
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyDCDvN3g953Hx9TIOXkM7LV2y5YDFvq3UI',
@@ -26,21 +27,22 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
+// const analytics = getAnalytics(app);
 const auth = getAuth();
+const functions = getFunctions();
+
 connectAuthEmulator(auth, 'http://localhost:9099');
+connectFunctionsEmulator(functions, 'localhost',5001);
+
+
 
 function App() {
 	const [buttonText, setButtonText] = useState('connect to wallet');
 
 	async function getNounceToSign(address) {
-		const respond = await axios.post(
+		const respond = await axios.get(
 			// 'https://us-central1-art-planet.cloudfunctions.net/getNonce',
-			'http://localhost:5001/art-planet/us-central1/getNonce', // for local development
-			{
-				address: address,
-			}
+			'http://localhost:5001/art-planet/us-central1/getNonce?address=' + address, // for local development
 		);
 		console.log('respond is: ', respond);
 		return respond.data.nonce;
@@ -76,6 +78,8 @@ function App() {
 			console.log('token is: ', token);
 			const userCredential = await signInWithCustomToken(auth, token); 
 			console.log(userCredential.user);
+			httpsCallable(functions, 'getMyTodoList')({});
+
 		} catch (err) {
 			console.log(err);
 		}
