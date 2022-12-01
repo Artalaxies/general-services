@@ -27,7 +27,7 @@ ReaderTaskEither<LoggerEnv, Error, string> => pipe(
     RTE.bind("response", () =>
       createEntity(defaultPageTemplate(TODOLIST_DATABASE_ID, userId)) ),
     RTE.bind("response2", ({response})=>
-      createEntity(todolistDatabaseTemplate(response, []))),
+      createEntity(todolistDatabaseTemplate(response, "Todo"))),
     chainReaderTaskEitherTryCatch(
         ({response, response2}) => notion.pages.update({
           page_id: response,

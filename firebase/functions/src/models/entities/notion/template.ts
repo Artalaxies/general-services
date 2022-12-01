@@ -5,7 +5,7 @@ import {CreateDatabaseParameters, CreatePageParameters}
 export type EntityParameter<A> = {_tag: string, parameters: A}
 
 export const todolistDatabaseTemplate = (pageId: string,
-    title: CreateDatabaseParameters["title"]):
+    title: string):
 EntityParameter<CreateDatabaseParameters> => {
   const defaultParam = defaultDatabaseTemplate(pageId, title);
   return {
@@ -43,14 +43,19 @@ EntityParameter<CreateDatabaseParameters> => {
 
 
 export const defaultDatabaseTemplate =
-(pageId: string, title: CreateDatabaseParameters["title"]):
+(pageId: string, title: string):
 EntityParameter<CreateDatabaseParameters> => ({
   _tag: "database",
   parameters: {
     parent: {
       page_id: pageId,
     },
-    title: title,
+    title: [{
+      type: "text",
+      text: {
+        content: title,
+      },
+    }],
     properties: {
       "Name": {
         title: {},
