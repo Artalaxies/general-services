@@ -1,16 +1,16 @@
 {
+  "compileOnSave": true,
   "compilerOptions": {
     "target": "ES6",
     "module": "CommonJS",
     "noImplicitReturns": true,
     "noUnusedLocals": true,
-    "outDir": "lib",
+    "outDir": "dist",
     "sourceMap": true,
     "strict": true,
     "esModuleInterop": true,
     "moduleResolution": "node"
   },
-  "compileOnSave": true,
   "include": [
     "src"
   ]

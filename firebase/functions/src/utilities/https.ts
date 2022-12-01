@@ -8,10 +8,10 @@ const cors = corsLib({
 });
 
 export function onRequest(handler:
-  ((_: functions.https.Request,
+  ((_: functions.Request,
   __: functions.Response) => any)):functions.HttpsFunction {
   return functions.https.onRequest((request, response) =>
-    cors(request, response, async () => await handler(request, response)));
+    cors(request, response, async (_) => await handler(request, response)));
 }
 
 export function onCall(handler:

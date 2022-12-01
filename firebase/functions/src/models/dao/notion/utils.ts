@@ -1,71 +1,48 @@
-import {UpdatePageResponse} from "@notionhq/client/build/src/api-endpoints";
 import {notion, TODOLIST_DATABASE_ID} from "./config";
+import {pipe} from "fp-ts/function";
+import * as RTE from "fp-ts/lib/ReaderTaskEither";
+import {LoggerEnv} from "logger-fp-ts";
+import {ReaderTaskEither} from "fp-ts/lib/ReaderTaskEither";
+import * as L from "logger-fp-ts";
+import {loggingRTE} from "../../../utilities/logger";
+// import {
+//   CreateDatabaseParameters} from "@notionhq/client/build/src/api-endpoints";
+import {todolistDatabaseTemplate,
+  defaultPageTemplate} from "../../entities/notion/template";
+import {chainReaderTaskEitherTryCatch} from "../../../utilities/type/error";
+import {createEntity} from "./database_dao";
 
 
 /**
  * Adds two numbers together.
  * @param {string} userId user id.
  * @return {string} The sum of the two numbers.
+ * @category Data Access
  */
-export function createUserTodoDatabase(userId: string):
-  Promise<UpdatePageResponse> {
-  return notion.pages.create({
-    parent: {
-      database_id: TODOLIST_DATABASE_ID,
-    },
-    properties: {
-      "Name": {
-        title: [
-          {
-            text: {
-              content: userId,
+export const createUserTodoDatabase = (userId: string):
+ReaderTaskEither<LoggerEnv, Error, string> => pipe(
+    RTE.ask<LoggerEnv, Error>(),
+    loggingRTE(() =>
+      L.debug("function createUserTodoDatabase accessed.")),
+    RTE.bind("response", () =>
+      createEntity(defaultPageTemplate(TODOLIST_DATABASE_ID, userId)) ),
+    RTE.bind("response2", ({response})=>
+      createEntity(todolistDatabaseTemplate(response, []))),
+    chainReaderTaskEitherTryCatch(
+        ({response, response2}) => notion.pages.update({
+          page_id: response,
+          properties: {
+            "database": {
+              rich_text: [
+                {
+                  text: {
+                    content: response2,
+                  },
+                },
+              ],
             },
           },
-        ],
-      },
-    },
-  }).then(async (response) => await notion.databases.create({
-    parent: {
-      page_id: response.id,
-    },
-    title: [],
-    is_inline: true,
-    properties: {
-      "Name": {
-        title: {},
-      },
-      "Finished": {
-        checkbox: {},
-      },
-      "Finshed At": {
-        formula: {
-          expression:
-            "end(prop(\"Finished\") ? prop(\"Updated At\") : "+
-            "fromTimestamp(toNumber(\"\")))",
-        },
-      },
-      "Updated At": {
-        last_edited_time: {},
-      },
-      "Created At": {
-        created_time: {},
-      },
-      "Created By": {
-        created_by: {},
-      },
-    },
-  }).then( async (response2)=> await notion.pages.update({
-    page_id: response.id,
-    properties: {
-      "database": {
-        rich_text: [
-          {
-            text: {
-              content: response2.id,
-            },
-          },
-        ],
-      },
-    },
-  })));
-}
+        }).then((_) => response2))
+);
+
+

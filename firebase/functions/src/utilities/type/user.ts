@@ -9,7 +9,7 @@ export class AccountNotExistErrorDataSnashot<T> extends DataSnapshot<T> {
  * Constructor.
  */
   constructor() {
-    super(false, 2004, undefined, "Account Not Exist.");
+    super(2004, undefined, "Account Not Exist.");
   }
 }
 
@@ -19,8 +19,9 @@ export class AccountNotExistErrorDataSnashot<T> extends DataSnapshot<T> {
 export class UnknownAccountErrorDataSnashot<T> extends DataSnapshot<T> {
 /**
  * Constructor.
+ * @param {string} error The account name that is not defined.
  */
-  constructor() {
-    super(false, 2001, undefined, "Unknown Account Error.");
+  constructor(error?: string) {
+    super(2001, undefined, error);
   }
 }

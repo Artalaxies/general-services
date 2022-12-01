@@ -9,7 +9,7 @@ export class InvalidAddressErrorDataSnapshot<T> extends DataSnapshot<T> {
      * Constructor.
      */
   constructor() {
-    super(false,
+    super(
         8001, undefined,
         "Not a Validated Address.");
   }
@@ -23,7 +23,7 @@ export class InvalidWalletAddressErrorDataSnapshot<T> extends DataSnapshot<T> {
      * Constructor.
      */
   constructor() {
-    super(false,
+    super(
         8002, undefined,
         "Not a Validated Wallet Address.");
   }

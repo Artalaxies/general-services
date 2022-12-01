@@ -1,13 +1,25 @@
 import {admin} from "./config";
-import {DataSnapshot} from "../../../utilities/snapshot/data_snapshot";
+import {DataSnapshot} from "../../../utilities/type/data_snapshot";
 import {Profile} from "../../entities/profile";
 import {getLatestNonce} from "./web3_dao";
 import {isValidatedMessage} from "../../../utilities/nonce";
-import {validateAddress} from "../../../utilities/address";
+import {isValidateAddress} from "../../../utilities/address";
 import {InvalidWalletAddressErrorDataSnapshot}
-  from "../../../utilities/snapshot/address";
+  from "../../../utilities/type/address";
+import {pipe} from "fp-ts/function";
+import * as B from "fp-ts/boolean";
+import * as TE from "fp-ts/TaskEither";
+import * as O from "fp-ts/Option";
+import * as RT from "fp-ts/lib/ReaderTask";
+import * as R from "fp-ts/lib/Reader";
+import * as RTE from "fp-ts/lib/ReaderTaskEither";
+import {ReaderTask} from "fp-ts/lib/ReaderTask";
+import {LoggerEnv} from "logger-fp-ts";
+import * as L from "logger-fp-ts";
+import {loggingRTE} from "../../../utilities/logger";
 
 /**
+ * @todo refactor to fp
  * Adds two numbers together.
  * @param {string} id The first number.
  * @return {Promise<DataSnapshot<Profile>>} The sum of the two numbers.
@@ -24,14 +36,15 @@ export async function getProfile(id: string): Promise<DataSnapshot<Profile>> {
       email: data?.email,
       latest_event: data?.latest_event,
     };
-    return new DataSnapshot(true, 2000, () => pro);
+    return new DataSnapshot(2000, pro);
   } else {
-    return new DataSnapshot(false, 2004, undefined);
+    return new DataSnapshot<Profile>(2004, undefined);
   }
 }
 
 
 /**
+ * @todo refactor to fp
  * set profile.
  * @param {Profile} profile The first number.
  * @return {Promise<void>} The sum of the two numbers.
@@ -58,18 +71,30 @@ export async function setProfile(profile: Profile): Promise<void> {
 /**
  * get name.
  * @param {string} id The first number.
- * @return {Promise<DataSnapshot<string>>} The sum of the two numbers.
+ * @return {ReaderTask<LoggerEnv, DataSnapshot<string>>}
+ *  The sum of the two numbers.
  */
-export async function getName(id: string): Promise<DataSnapshot<string>> {
-  const doc = await admin.firestore().collection("users")
-      .doc(id)
-      .get();
-  if (doc.exists) {
-    return new DataSnapshot(true, 2000, ()=> doc.data()?.username);
-  } else {
-    return new DataSnapshot(false, 2004, undefined);
-  }
-}
+export const getName = (id: string):
+ReaderTask<LoggerEnv, DataSnapshot<string>> => pipe(
+    RTE.ask<LoggerEnv>(),
+    loggingRTE(() => L.debug("executed function getName.")),
+    R.map((_) =>
+      TE.tryCatch(
+          () => admin.firestore().collection("users")
+              .doc(id)
+              .get(),
+          (message) => new Error(<string>message)),
+    ),
+    RTE.map((doc) => O.fromNullable(doc.data()?.username)),
+    RTE.map(
+        O.match(
+            () => new DataSnapshot<string>(2004, undefined),
+            (username) => new DataSnapshot<string>(2000, username)
+        )
+    ),
+    RTE.getOrElse(
+        (error) => RT.of(new DataSnapshot<string>(2004, undefined)))
+);
 
 
 /**
@@ -78,33 +103,69 @@ export async function getName(id: string): Promise<DataSnapshot<string>> {
  * @param {string} signature The first number.
  * @param {string} username The first number.
  * @param {string} email The first number.
- * @return {Promise<DataSnapshot<string>>} The sum of the two numbers.
+ * @return {ReaderTask<LoggerEnv, DataSnapshot<string>>}
+ * The sum of the two numbers.
  */
-export async function registerAccount(
+export const registerAccount = (
     address: string,
     signature: string,
     username?: string,
-    email?: string): Promise<DataSnapshot<string>> {
-  if (!validateAddress(address)) {
-    return new InvalidWalletAddressErrorDataSnapshot<string>();
-  }
-  const nonce = await getLatestNonce(address);
-  if (!nonce.isSuccess() ) {
-    return nonce;
-  }
-  if (isValidatedMessage(address, nonce.data?.() || "", signature)) {
-    return await admin.auth().createUser({
-      displayName: username || "",
-      email: email || "",
-    }).then((userRecord)=> {
-      return new DataSnapshot( true, 2000, ()=> userRecord.uid);
-    }).catch((err)=> {
-      return new DataSnapshot(false, 2007, undefined, err);
-    });
-  } else {
-    return new DataSnapshot(false, 2005,
-        undefined, "Signature incorrect Error");
-  }
-}
+    email?: string) => pipe(
+    RTE.ask<LoggerEnv, Error>(),
+    loggingRTE(() =>
+      L.debug("executed function registerAccount.")),
+    RTE.map((_)=> isValidateAddress(address)),
+    RTE.getOrElse((error)=> RT.of(false)),
+    RT.chain(B.match(
+        () => pipe(
+            RT.ask<LoggerEnv>(),
+            RT.map((_) => new InvalidWalletAddressErrorDataSnapshot<string>())
+        ),
+        () => pipe(
+            RT.ask<LoggerEnv>(),
+            RT.chain((_) => getLatestNonce(address)),
+            RT.map((res) => res.getOption()),
+            RT.chain(O.match(
+                () => pipe(
+                    RT.ask<LoggerEnv>(),
+                    RT.map((_) => new DataSnapshot<string>(2001,
+                        undefined,
+                        "Unable to get latest nonce for address"))
+                ),
+                (nonce) => pipe(
+                    RT.ask<LoggerEnv>(),
+                    RT.map((_) =>
+                      isValidatedMessage(
+                          address,
+                          nonce,
+                          signature)),
+                    RT.chain(B.match(
+                        () =>
+                          RT.of( new DataSnapshot<string>(2001,
+                              undefined,
+                              "Signature incorrect Error")),
+                        () => pipe(
+                            TE.tryCatch(
+                                () => admin.auth().createUser({
+                                  displayName: username || "",
+                                  email: email || "",
+                                }).then((userRecord)=>
+                                  new DataSnapshot(2000, userRecord.uid)
+                                ),
+                                (message) => <Error>message
+                            ),
+                            RTE.fromTaskEither,
+                            RTE.getOrElse((error)=>
+                              RT.of( new DataSnapshot<string>(2001,
+                                  undefined,
+                                  error.message)))
+                        ),
+                    )),
+                ))
+            ),
+        ),
+
+    ))
+);
 
 

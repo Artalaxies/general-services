@@ -1,5 +1,3 @@
-/* eslint-disable no-tabs */
-/* eslint-disable max-len */
 
 
 // const useEmulator = true;
@@ -12,8 +10,8 @@
 // export * from "./controllers/account/account";
 // export * from "./controllers/account/profile";
 export * from "./controllers/todo/operation";
-export * from "./controllers/web3Auth/authorization";
-export * from "./controllers/web3Auth/connect_account";
+export * from "./controllers/web3/authorization";
+export * from "./controllers/web3/connect_account";
 
 
 // const multiformats = require('multiformats/cid');
