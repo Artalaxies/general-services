@@ -4,12 +4,12 @@ import * as RTE from "fp-ts/lib/ReaderTaskEither";
 import {LoggerEnv} from "logger-fp-ts";
 import {ReaderTaskEither} from "fp-ts/lib/ReaderTaskEither";
 import * as L from "logger-fp-ts";
-import {loggingRTE} from "../../../utilities/logger";
+import {loggingRTE} from "../../utilities/logger";
 // import {
 //   CreateDatabaseParameters} from "@notionhq/client/build/src/api-endpoints";
 import {todolistDatabaseTemplate,
-  defaultPageTemplate} from "../../entities/notion/template";
-import {chainReaderTaskEitherTryCatch} from "../../../utilities/type/error";
+  defaultCreatePage} from "../../models/notion/templates/create";
+import {chainReaderTaskEitherTryCatch} from "../../utilities/type/error";
 import {createEntity} from "./database_dao";
 
 
@@ -25,7 +25,17 @@ ReaderTaskEither<LoggerEnv, Error, string> => pipe(
     loggingRTE(() =>
       L.debug("function createUserTodoDatabase accessed.")),
     RTE.bind("response", () =>
-      createEntity(defaultPageTemplate(TODOLIST_DATABASE_ID, userId)) ),
+      createEntity(defaultCreatePage(TODOLIST_DATABASE_ID).update({
+        properties: {
+          "Name": {
+            title: [
+              {text: {
+                content: userId,
+              }},
+            ],
+          },
+        },
+      }))),
     RTE.bind("response2", ({response})=>
       createEntity(todolistDatabaseTemplate(response, "Todo"))),
     chainReaderTaskEitherTryCatch(

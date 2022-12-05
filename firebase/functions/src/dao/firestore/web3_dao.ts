@@ -1,11 +1,11 @@
-import {DataSnapshot} from "../../../utilities/type/data_snapshot";
+import {DataSnapshot} from "../../utilities/type/data_snapshot";
 import {admin} from "./config";
 import {
-  isValidateAddress} from "../../../utilities/address";
+  isValidateAddress} from "../../utilities/address";
 import {InvalidWalletAddressErrorDataSnapshot}
-  from "../../../utilities/type/address";
+  from "../../utilities/type/address";
 import {AccountNotExistErrorDataSnashot,
-  UnknownAccountErrorDataSnashot} from "../../../utilities/type/user";
+  UnknownAccountErrorDataSnashot} from "../../utilities/type/user";
 import {pipe} from "fp-ts/function";
 import * as B from "fp-ts/boolean";
 import * as TE from "fp-ts/TaskEither";
@@ -15,7 +15,7 @@ import {ReaderTask} from "fp-ts/ReaderTask";
 import {LoggerEnv} from "logger-fp-ts";
 import * as L from "logger-fp-ts";
 import {loggingRT,
-  loggingRTE} from "../../../utilities/logger";
+  loggingRTE} from "../../utilities/logger";
 import * as O from "fp-ts/Option";
 
 /**

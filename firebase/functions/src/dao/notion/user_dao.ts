@@ -1,4 +1,4 @@
-import {DataSnapshot} from "../../../utilities/type/data_snapshot";
+import {DataSnapshot} from "../../utilities/type/data_snapshot";
 import {notion, USER_DATABASE_ID} from "./config";
 import {pipe} from "fp-ts/function";
 import * as RT from "fp-ts/lib/ReaderTask";
@@ -7,8 +7,8 @@ import * as RTE from "fp-ts/lib/ReaderTaskEither";
 import {ReaderTask} from "fp-ts/lib/ReaderTask";
 import {LoggerEnv} from "logger-fp-ts";
 import * as L from "logger-fp-ts";
-import {loggingRTE} from "../../../utilities/logger";
-import {chainReaderTaskEitherTryCatch} from "../../../utilities/type/error";
+import {loggingRTE} from "../../utilities/logger";
+import {chainReaderTaskEitherTryCatch} from "../../utilities/type/error";
 
 /**
  * Adds two numbers together.

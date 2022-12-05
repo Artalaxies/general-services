@@ -1,5 +1,5 @@
 import {PageObjectResponse} from "@notionhq/client/build/src/api-endpoints";
-import {DataSnapshot} from "../../../utilities/type/data_snapshot";
+import {DataSnapshot} from "../../utilities/type/data_snapshot";
 import {notion, TODOLIST_DATABASE_ID} from "./config";
 import {getDatabaseIdbyUserId} from "./database_dao";
 import {pipe} from "fp-ts/function";
@@ -8,8 +8,8 @@ import {ReaderTask} from "fp-ts/lib/ReaderTask";
 import * as L from "logger-fp-ts";
 import * as RT from "fp-ts/lib/ReaderTask";
 import * as RTE from "fp-ts/lib/ReaderTaskEither";
-import {loggingRT, loggingRTE} from "../../../utilities/logger";
-import {chainReaderTaskEitherTryCatch} from "../../../utilities/type/error";
+import {loggingRT, loggingRTE} from "../../utilities/logger";
+import {chainReaderTaskEitherTryCatch} from "../../utilities/type/error";
 
 /**
  * getTodoListDatabaseIdbyUserId.

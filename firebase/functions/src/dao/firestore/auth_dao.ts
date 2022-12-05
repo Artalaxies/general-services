@@ -1,8 +1,8 @@
 import {admin} from "./config";
-import {DataSnapshot} from "../../../utilities/type/data_snapshot";
-import {isValidateAddress} from "../../../utilities/address";
+import {DataSnapshot} from "../../utilities/type/data_snapshot";
+import {isValidateAddress} from "../../utilities/address";
 import {InvalidWalletAddressErrorDataSnapshot}
-  from "../../../utilities/type/address";
+  from "../../utilities/type/address";
 import * as TE from "fp-ts/TaskEither";
 import {pipe} from "fp-ts/function";
 import * as T from "fp-ts/Task";
@@ -13,7 +13,7 @@ import {ReaderTask} from "fp-ts/lib/ReaderTask";
 import * as L from "logger-fp-ts";
 import {LoggerEnv} from "logger-fp-ts";
 import * as R from "fp-ts/Reader";
-import {loggingRT} from "../../../utilities/logger";
+import {loggingRT} from "../../utilities/logger";
 
 /**
  * @todo refactor logging.

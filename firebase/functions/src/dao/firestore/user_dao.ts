@@ -1,11 +1,11 @@
 import {admin} from "./config";
-import {DataSnapshot} from "../../../utilities/type/data_snapshot";
-import {Profile} from "../../entities/profile";
+import {DataSnapshot} from "../../utilities/type/data_snapshot";
+import {Profile} from "../../models/profile";
 import {getLatestNonce} from "./web3_dao";
-import {isValidatedMessage} from "../../../utilities/nonce";
-import {isValidateAddress} from "../../../utilities/address";
+import {isValidatedMessage} from "../../utilities/nonce";
+import {isValidateAddress} from "../../utilities/address";
 import {InvalidWalletAddressErrorDataSnapshot}
-  from "../../../utilities/type/address";
+  from "../../utilities/type/address";
 import {pipe} from "fp-ts/function";
 import * as B from "fp-ts/boolean";
 import * as TE from "fp-ts/TaskEither";
@@ -16,7 +16,7 @@ import * as RTE from "fp-ts/lib/ReaderTaskEither";
 import {ReaderTask} from "fp-ts/lib/ReaderTask";
 import {LoggerEnv} from "logger-fp-ts";
 import * as L from "logger-fp-ts";
-import {loggingRTE} from "../../../utilities/logger";
+import {loggingRTE} from "../../utilities/logger";
 
 /**
  * @todo refactor to fp

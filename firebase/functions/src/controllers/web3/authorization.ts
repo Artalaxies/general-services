@@ -1,7 +1,7 @@
 import {onRequest} from "../../utilities/https";
 import {getLatestNonce, setLatestNonce}
-  from "../../models/dao/firestore/web3_dao";
-import {getCustomToken} from "../../models/dao/firestore/auth_dao";
+  from "../../dao/firestore/web3_dao";
+import {getCustomToken} from "../../dao/firestore/auth_dao";
 import * as nonce from "../../utilities/nonce";
 import {isValidateAddress} from "../../utilities/address";
 import {pipe} from "fp-ts/function";

@@ -1,6 +1,6 @@
 import {onCall} from "../../utilities/https";
 import * as functions from "firebase-functions";
-import {getTodoListDatabaseIdbyUserId} from "../../models/dao/notion/todo_dao";
+import {getTodoListDatabaseIdbyUserId} from "../../dao/notion/todo_dao";
 import {pipe} from "fp-ts/function";
 import * as O from "fp-ts/Option";
 import * as RTE from "fp-ts/lib/ReaderTaskEither";
