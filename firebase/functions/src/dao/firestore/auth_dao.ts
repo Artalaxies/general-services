@@ -1,8 +1,8 @@
-import {admin} from "./config";
-import {DataSnapshot} from "../../utilities/type/data_snapshot";
+import {admin} from "../../configs/firebase";
+import {DataSnapshot} from "../../models/data_snapshot/data_snapshot";
 import {isValidateAddress} from "../../utilities/address";
 import {InvalidWalletAddressErrorDataSnapshot}
-  from "../../utilities/type/address";
+  from "../../models/data_snapshot/address";
 import * as TE from "fp-ts/TaskEither";
 import {pipe} from "fp-ts/function";
 import * as T from "fp-ts/Task";
@@ -13,7 +13,7 @@ import {ReaderTask} from "fp-ts/lib/ReaderTask";
 import * as L from "logger-fp-ts";
 import {LoggerEnv} from "logger-fp-ts";
 import * as R from "fp-ts/Reader";
-import {loggingRT} from "../../utilities/logger";
+import * as RT2 from "../../typed/ReaderTask";
 
 /**
  * @todo refactor logging.
@@ -25,7 +25,7 @@ import {loggingRT} from "../../utilities/logger";
 export const getCustomToken = (address: string):
  ReaderTask<LoggerEnv, DataSnapshot<string>> => pipe(
     RT.ask<LoggerEnv>(),
-    loggingRT(()=>L.debug("function getCustomToken accessed.")),
+    RT2.log(()=>L.debug("function getCustomToken accessed.")),
     RT.map((_) => isValidateAddress(address)),
     RT.chain(B.match(
         () => RT.of(new InvalidWalletAddressErrorDataSnapshot<string>()),

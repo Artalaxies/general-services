@@ -18,7 +18,7 @@ export function onCall(handler:
     ((data: any,
     context: functions.https.CallableContext) => any)):
     functions.HttpsFunction & functions.Runnable<any> {
-  return functions.https.onCall((data, context) =>handler(data, context));
+  return functions.https.onCall((data, context) => handler(data, context));
 }
 
 

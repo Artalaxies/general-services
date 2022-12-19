@@ -1,11 +1,11 @@
-import {admin} from "./config";
-import {DataSnapshot} from "../../utilities/type/data_snapshot";
-import {Profile} from "../../models/profile";
-import {getLatestNonce} from "./web3_dao";
+import {admin} from "../../configs/firebase";
+import {DataSnapshot} from "../../models/data_snapshot/data_snapshot";
+import {Profile} from "../../models/adt/Profile";
+import {getLatestNonce} from "./services/web3_dao";
 import {isValidatedMessage} from "../../utilities/nonce";
 import {isValidateAddress} from "../../utilities/address";
 import {InvalidWalletAddressErrorDataSnapshot}
-  from "../../utilities/type/address";
+  from "../../models/data_snapshot/address";
 import {pipe} from "fp-ts/function";
 import * as B from "fp-ts/boolean";
 import * as TE from "fp-ts/TaskEither";
@@ -16,7 +16,7 @@ import * as RTE from "fp-ts/lib/ReaderTaskEither";
 import {ReaderTask} from "fp-ts/lib/ReaderTask";
 import {LoggerEnv} from "logger-fp-ts";
 import * as L from "logger-fp-ts";
-import {loggingRTE} from "../../utilities/logger";
+import * as RTE2 from "../../typed/ReaderTaskEither";
 
 /**
  * @todo refactor to fp
@@ -77,7 +77,7 @@ export async function setProfile(profile: Profile): Promise<void> {
 export const getName = (id: string):
 ReaderTask<LoggerEnv, DataSnapshot<string>> => pipe(
     RTE.ask<LoggerEnv>(),
-    loggingRTE(() => L.debug("executed function getName.")),
+    RTE2.log(() => L.debug("executed function getName.")),
     R.map((_) =>
       TE.tryCatch(
           () => admin.firestore().collection("users")
@@ -112,7 +112,7 @@ export const registerAccount = (
     username?: string,
     email?: string) => pipe(
     RTE.ask<LoggerEnv, Error>(),
-    loggingRTE(() =>
+    RTE2.log(() =>
       L.debug("executed function registerAccount.")),
     RTE.map((_)=> isValidateAddress(address)),
     RTE.getOrElse((error)=> RT.of(false)),

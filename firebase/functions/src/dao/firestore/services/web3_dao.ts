@@ -1,11 +1,11 @@
-import {DataSnapshot} from "../../utilities/type/data_snapshot";
-import {admin} from "./config";
+import {DataSnapshot} from "../../../models/data_snapshot/data_snapshot";
+import {admin} from "../../../configs/firebase";
 import {
-  isValidateAddress} from "../../utilities/address";
+  isValidateAddress} from "../../../utilities/address";
 import {InvalidWalletAddressErrorDataSnapshot}
-  from "../../utilities/type/address";
+  from "../../../models/data_snapshot/address";
 import {AccountNotExistErrorDataSnashot,
-  UnknownAccountErrorDataSnashot} from "../../utilities/type/user";
+  UnknownAccountErrorDataSnashot} from "../../../models/data_snapshot/user";
 import {pipe} from "fp-ts/function";
 import * as B from "fp-ts/boolean";
 import * as TE from "fp-ts/TaskEither";
@@ -14,8 +14,8 @@ import * as RTE from "fp-ts/ReaderTaskEither";
 import {ReaderTask} from "fp-ts/ReaderTask";
 import {LoggerEnv} from "logger-fp-ts";
 import * as L from "logger-fp-ts";
-import {loggingRT,
-  loggingRTE} from "../../utilities/logger";
+import * as RT2 from "../../../typed/ReaderTask";
+import * as RTE2 from "../../../typed/ReaderTaskEither";
 import * as O from "fp-ts/Option";
 
 /**
@@ -29,15 +29,15 @@ export const getLatestNonce =
     address = address.toLocaleLowerCase();
     return pipe(
         RT.ask<LoggerEnv>(),
-        loggingRT(() => L.debug("Beginning execution of \"getLatestNonce\"")),
+        RT2.log(() => L.debug("Beginning execution of \"getLatestNonce\"")),
         RT.map(() => isValidateAddress(address)),
-        loggingRT((b) => L.debug("Address Validated: " + b)),
+        RT2.log((b) => L.debug("Address Validated: " + b)),
         RT.chain(
             B.match( () => RT.of(
                 new InvalidWalletAddressErrorDataSnapshot<string>()),
             () => pipe(
                 RTE.ask<LoggerEnv, Error>(),
-                loggingRTE(() =>
+                RTE2.log(() =>
                   L.debug("Fetch nonce number from Firestore")),
                 RTE.chain(
                     () => RTE.fromTaskEither(
@@ -51,20 +51,20 @@ export const getLatestNonce =
                 RTE.matchE( (error) => pipe( RT.of(
                     new UnknownAccountErrorDataSnashot
                                       <string>(error.message)),
-                loggingRT(() => L.errorP("Unknown Error")(
+                RT2.log(() => L.errorP("Unknown Error")(
                     {error: error.message}))),
                 O.match(() => pipe(RT.of(
                     new AccountNotExistErrorDataSnashot<string>()),
-                loggingRT(() => L.info("Account Dose Not Exist"))),
+                RT2.log(() => L.info("Account Dose Not Exist"))),
                 (latestNonce)=> pipe(
                     RT.of(new DataSnapshot<string>(2010, latestNonce)),
-                    loggingRT(() => L.debugP("Fetched Data")(
+                    RT2.log(() => L.debugP("Fetched Data")(
                         {nonce: latestNonce}))),
                 )
                 ),
             )),
         ),
-        loggingRT((b) => L.debugP("state id")({stateId: b.stateId})),
+        RT2.log((b) => L.debugP("state id")({stateId: b.stateId})),
     );
   };
 
@@ -81,16 +81,16 @@ export const setLatestNonce =
     address = address.toLocaleLowerCase();
     return pipe(
         RT.ask<LoggerEnv>(),
-        loggingRT((_) => L.debug("Beginning execution of  \"setLatestNonce\"")),
+        RT2.log((_) => L.debug("Beginning execution of  \"setLatestNonce\"")),
         RT.map((l) => isValidateAddress(address)),
-        loggingRT((b) => L.debug("Address Validated: " + b)),
+        RT2.log((b) => L.debug("Address Validated: " + b)),
         RT.chain(
             B.match(
                 () =>
                   RT.of(new InvalidWalletAddressErrorDataSnapshot<string>()),
                 () => pipe(
                     RTE.ask<LoggerEnv>(),
-                    loggingRTE(() => L.debugP("Updating Nonce")({
+                    RTE2.log(() => L.debugP("Updating Nonce")({
                       new_nonce: nonce})),
                     RTE.chain(() =>
                       RTE.fromTaskEither(TE.tryCatch(
@@ -106,7 +106,7 @@ export const setLatestNonce =
                     RTE.orElse(
                         (error) => pipe(
                             RTE.ask<LoggerEnv>(),
-                            loggingRTE(() =>
+                            RTE2.log(() =>
                               L.debugP("Unable to create a key: latest_nonce")({
                                 message: error.message})),
                             RTE.chain(() => RTE.fromTaskEither(TE.tryCatch(
@@ -122,14 +122,14 @@ export const setLatestNonce =
                     ),
                     RTE.getOrElse((error) => pipe(
                         RT.ask<LoggerEnv>(),
-                        loggingRT(() =>
+                        RT2.log(() =>
                           L.errorP("Unknown Error")({
                             error: error.message,
                             stack: error.stack || ""})),
                         RT.map(
                             () => new UnknownAccountErrorDataSnashot<string>())
                     )),
-                    loggingRT((b) =>
+                    RT2.log((b) =>
                       L.debugP("state id")({stateId: b.stateId})),
 
                 )

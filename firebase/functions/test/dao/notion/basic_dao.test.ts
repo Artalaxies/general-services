@@ -1,22 +1,23 @@
 import "mocha";
 import {expect} from "chai";
-import {checkDatabase, checkPage, createEntity,
+import {checkDatabaseProperties, checkPageProperties, createEntity,
   deleteEntity,
-  updateEntity} from "../../../../src/dao/notion/database_dao";
-import {defaultCreateDatabase, defaultCreatePage}
-  from "../../../../src/models/notion/templates/create";
+  updateEntity} from "../../../src/dao/notion/sdk/basic_dao";
 import * as RTE from "fp-ts/lib/ReaderTaskEither";
 // import * as TE from "fp-ts/lib/TaskEither";
 // import * as E from "fp-ts/lib/Either";
 import {pipe} from "fp-ts/lib/function";
-import {developmentEnv} from "../../../../src/utilities/logger";
+import {developmentEnv} from "../../../src/utilities/logger";
 import {LoggerEnv} from "logger-fp-ts";
-import {defaultDeleteDatabase,
-  defaultDeletePage, defaultUpdateDatabase, defaultUpdatePage}
-  from "../../../../src/models/notion/templates/update";
+import {defaultCreateDatabaseTemplate,
+  defaultCreatePageTemplate,
+  defaultDeleteDatabaseTemplate,
+  defaultDeletePageTemplate,
+  defaultUpdateDatabaseTemplate,
+  defaultUpdatePageTemplate}
+  from "../../../src/models/notion/basic";
 
-
-describe("Notion API", () =>{
+describe("Basic Notion API Operation", () =>{
   describe("Database Operation", () => {
     let databaseId = "";
     let pageId = "";
@@ -25,8 +26,16 @@ describe("Notion API", () =>{
       pipe(
           RTE.ask<LoggerEnv>(),
           RTE.chain(() =>createEntity(
-              defaultCreateDatabase("4c2b2362-2576-4f8f-8f64-d7b0b25a11fe",
-                  "Testing Database"))),
+              defaultCreateDatabaseTemplate(process.env.TESTING_AREA_ID || "")
+                  .update({
+                    title: [
+                      {text:
+                  {
+                    content: "Testing Database",
+                  }},
+                    ],
+                  }),
+          )),
           RTE.map((id) => {
             databaseId = id;
             expect(databaseId).to.contain("-");
@@ -39,7 +48,7 @@ describe("Notion API", () =>{
       pipe(
           RTE.ask<LoggerEnv>(),
           RTE.chain(() => updateEntity(
-              defaultUpdateDatabase(databaseId)
+              defaultUpdateDatabaseTemplate(databaseId)
                   .update(
                       {
                         properties: {
@@ -69,7 +78,7 @@ describe("Notion API", () =>{
     it("Check columns in a Database", (done) =>{
       pipe(
           RTE.ask<LoggerEnv>(),
-          RTE.chain(() =>checkDatabase(databaseId)),
+          RTE.chain(() =>checkDatabaseProperties(databaseId)),
           RTE.map((response)=>response.properties),
           RTE.map((pro)=>{
             console.log(pro);
@@ -85,7 +94,7 @@ describe("Notion API", () =>{
       pipe(
           RTE.ask<LoggerEnv>(),
           RTE.chain(() =>
-            createEntity(defaultCreatePage(databaseId))),
+            createEntity(defaultCreatePageTemplate(databaseId))),
           RTE.map((id)=>{
             pageId = id;
             expect(pageId).to.contain("-");
@@ -94,12 +103,17 @@ describe("Notion API", () =>{
       )(developmentEnv)().catch(done);
     });
 
+    it("query database", (done)=>{
+      pipe(
+          RTE.ask<LoggerEnv>(),
+      )(developmentEnv)().catch(done);
+    });
 
     it("Edit a page in a Database", (done) => {
       pipe(
           RTE.ask<LoggerEnv>(),
           RTE.chain(() =>
-            updateEntity(defaultUpdatePage(pageId).update({
+            updateEntity(defaultUpdatePageTemplate(pageId).update({
               properties: {
                 "Name": {
                   title: [
@@ -130,7 +144,7 @@ describe("Notion API", () =>{
                 },
               },
             }))),
-          RTE.chain(() =>checkPage(pageId)),
+          RTE.chain(() =>checkPageProperties(pageId)),
           RTE.map((response)=>response.properties),
           RTE.map((pro)=>{
             console.log(pro);
@@ -154,7 +168,7 @@ describe("Notion API", () =>{
     it("Delete a page in a Database", (done) =>{
       pipe(
           RTE.ask<LoggerEnv>(),
-          RTE.chain(() =>deleteEntity(defaultDeletePage(pageId))),
+          RTE.chain(() =>deleteEntity(defaultDeletePageTemplate(pageId))),
           RTE.map((response)=> {
             done();
           }),
@@ -164,7 +178,8 @@ describe("Notion API", () =>{
     it("Delete a Database", (done) => {
       pipe(
           RTE.ask<LoggerEnv>(),
-          RTE.chain(() =>deleteEntity(defaultDeleteDatabase(databaseId))),
+          RTE.chain(() =>
+            deleteEntity(defaultDeleteDatabaseTemplate(databaseId))),
           RTE.map((response)=> {
             done();
           }),

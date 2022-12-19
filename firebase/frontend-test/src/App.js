@@ -42,7 +42,7 @@ function App() {
 	async function getNounceToSign(address) {
 		const respond = await axios.get(
 			// 'https://us-central1-art-planet.cloudfunctions.net/getNonce',
-			'http://localhost:5001/art-planet/us-central1/getNonce?address=' + address, // for local development
+			'http://localhost:5001/art-planet/us-central1/web3auth-getNonce?address=' + address, // for local development
 		);
 		console.log('respond is: ', respond);
 		return respond.data.nonce;
@@ -51,7 +51,7 @@ function App() {
 	async function verifySignedMessage(address, signature) {
 		const respond = await axios.post(
 			// 'https://us-central1-art-planet.cloudfunctions.net/verifySignedMessage',
-			'http://localhost:5001/art-planet/us-central1/verifySignedMessage',  // for local development
+			'http://localhost:5001/art-planet/us-central1/web3auth-verifySignedMessage',  // for local development
 			{
 				address: address,
 				signature: signature,
@@ -78,8 +78,54 @@ function App() {
 			console.log('token is: ', token);
 			const userCredential = await signInWithCustomToken(auth, token); 
 			console.log(userCredential.user);
-			httpsCallable(functions, 'getMyTodoList')({});
 
+		} catch (err) {
+			console.log(err);
+		}
+	}
+
+	async function finishedTask() {
+		try {
+
+			// httpsCallable(functions, 'todo-register')({});
+			// httpsCallable(functions, 'todo-addTask')({
+			// 	content: "yooo",
+			// 	finished: false,
+			// 	service_id: "b3e46ff9-78d1-4728-9cd8-fc179288aeb7"
+			// });
+			httpsCallable(functions, 'todo-finishedTask')({
+				task_id: "d2cb9e5f-549d-4488-96e4-7509b15d14f2",
+			});
+			// httpsCallable(functions, 'todo-deleteTask')({
+			// 	task_id: "d2cb9e5f-549d-4488-96e4-7509b15d14f2",
+			// });
+			// httpsCallable(functions, 'todo-getMyTasks')({
+			// 	service_id: "b3e46ff9-78d1-4728-9cd8-fc179288aeb7",
+			// });
+			// httpsCallable(functions, 'blog-getRecentPost')({});
+		} catch (err) {
+			console.log(err);
+		}
+	}
+	async function unfinishedTask() {
+		try {
+
+			// httpsCallable(functions, 'todo-register')({});
+			// httpsCallable(functions, 'todo-addTask')({
+			// 	content: "yooo",
+			// 	finished: false,
+			// 	service_id: "b3e46ff9-78d1-4728-9cd8-fc179288aeb7"
+			// });
+			httpsCallable(functions, 'todo-unfinishedTask')({
+				task_id: "d2cb9e5f-549d-4488-96e4-7509b15d14f2",
+			});
+			// httpsCallable(functions, 'todo-deleteTask')({
+			// 	task_id: "d2cb9e5f-549d-4488-96e4-7509b15d14f2",
+			// });
+			// httpsCallable(functions, 'todo-getMyTasks')({
+			// 	service_id: "b3e46ff9-78d1-4728-9cd8-fc179288aeb7",
+			// });
+			// httpsCallable(functions, 'blog-getRecentPost')({});
 		} catch (err) {
 			console.log(err);
 		}
@@ -97,8 +143,10 @@ function App() {
 	// signer.signMessage('181627').then(result => console.log(result));
 
 	return (
-		<div className="App">
-			<button onClick={connectWallet}>{buttonText}</button>
+		<div>
+			<div><button onClick={connectWallet}>{buttonText}</button></div>
+			<div><button onClick={finishedTask}>finishedTask</button></div>
+			<div><button onClick={unfinishedTask}>unfinishedTask</button></div>
 		</div>
 	);
 }

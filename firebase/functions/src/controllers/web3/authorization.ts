@@ -1,6 +1,6 @@
 import {onRequest} from "../../utilities/https";
 import {getLatestNonce, setLatestNonce}
-  from "../../dao/firestore/web3_dao";
+  from "../../dao/firestore/services/web3_dao";
 import {getCustomToken} from "../../dao/firestore/auth_dao";
 import * as nonce from "../../utilities/nonce";
 import {isValidateAddress} from "../../utilities/address";
@@ -11,16 +11,17 @@ import * as R from "fp-ts/Reader";
 import * as O from "fp-ts/Option";
 import * as RT from "fp-ts/lib/ReaderTask";
 import * as L from "logger-fp-ts";
-import {developmentEnv, loggingRT} from "../../utilities/logger";
+import * as RT2 from "../../typed/ReaderTask";
 // import {runReaderTask} from "../../utilities/type/task";
 import {LoggerEnv} from "logger-fp-ts";
+import {Binding} from "../../configs/binding";
 
 
 export const getNonce = onRequest((request, response) => pipe(
     RT.ask<LoggerEnv>(),
-    loggingRT(
+    RT2.log(
         () => L.debug("Accessing endpoint \"getNonce\"")),
-    loggingRT(
+    RT2.log(
         () => L.debugP("Request method")({
           "request.method": request.method})),
     RT.map((_) => request.method === "GET"),
@@ -36,7 +37,7 @@ export const getNonce = onRequest((request, response) => pipe(
                     RT.ask<LoggerEnv>(),
                     RT.map( () =>
                       (<string>request.query.address).toLowerCase()),
-                    loggingRT(
+                    RT2.log(
                         (address) => L.infoP("Recived address")({
                           address: address})),
                     RT.chain((address) => getLatestNonce(address)),
@@ -45,7 +46,7 @@ export const getNonce = onRequest((request, response) => pipe(
                         return pipe(
                             RT.ask<LoggerEnv>(),
                             RT.chain((_) => RT.of(nonceData.getOption())),
-                            loggingRT(
+                            RT2.log(
                                 (nonceOp) => L.infoP("Got Nonce")({
                                   nonce: O.getOrElse(()=>"0")(nonceOp)})),
                             RT.map(O.match(
@@ -83,15 +84,15 @@ export const getNonce = onRequest((request, response) => pipe(
         )
     )),
 
-)(developmentEnv)()
+)(Binding)()
 );
 
 
 exports.verifySignedMessage = onRequest(async (request, response) => await pipe(
     RT.ask<LoggerEnv>(),
-    loggingRT(
+    RT2.log(
         () => L.debug("Accessing endpoint \"verifySignedMessage\"")),
-    loggingRT(()=>L.debugP("Request method")({
+    RT2.log(()=>L.debugP("Request method")({
       "request.method": request.method})),
     RT.map((_) => request.method === "POST"),
     RT.chain(B.match(
@@ -112,11 +113,11 @@ exports.verifySignedMessage = onRequest(async (request, response) => await pipe(
                 ([address, signature]) => pipe(
                     RT.ask<LoggerEnv>(),
                     R.chain((_) => getLatestNonce(address)),
-                    loggingRT(
+                    RT2.log(
                         (nonceData) => L.infoP("Get Lastest Nonce")({
                           stateId: nonceData.stateId})),
                     RT.map((nonce) => nonce.getOption()),
-                    loggingRT(
+                    RT2.log(
                         (nonceOp) => L.infoP("Got Nonce")({
                           nonce: O.getOrElse(()=>"0")(nonceOp)})),
                     RT.chain(O.match(
@@ -164,7 +165,7 @@ exports.verifySignedMessage = onRequest(async (request, response) => await pipe(
             )),
         )
     ))
-)(developmentEnv)());
+)(Binding)());
 
 // exports.verifySignedMessage = onRequest(async (request, response) => {
 //   console.log(request.body.address, request.body.sigature);

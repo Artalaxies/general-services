@@ -9,9 +9,10 @@
 
 // export * from "./controllers/account/account";
 // export * from "./controllers/account/profile";
-export * from "./controllers/todo/operation";
-export * from "./controllers/web3/authorization";
-export * from "./controllers/web3/connect_account";
+export * as todo from "./controllers/todo/operation";
+export * as blog from "./controllers/blog/operation";
+export * as web3auth from "./controllers/web3/authorization";
+export * as web3connect from "./controllers/web3/connect_account";
 
 
 // const multiformats = require('multiformats/cid');
